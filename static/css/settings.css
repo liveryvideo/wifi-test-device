@@ -1,0 +1,52 @@
+#settings-container {
+    display: inline-block;
+    width: 87%;
+    height: 10%;
+}
+
+.container{
+    vertical-align: top;
+    display: inline-block;
+    width: 45%;
+    height: 20%;
+    margin: 0 10px 10px 10px;
+}
+
+#packet-settings label {
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 31%;
+}
+
+#packet-settings input {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 30%;
+}
+
+#latency-settings label {
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 31%;
+}
+
+#latency-settings input {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 30%;
+}
+
+#bandwidth-settings label {
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 31%;
+}
+
+#bandwidth-settings input {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 30%;
+}

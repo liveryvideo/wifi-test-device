@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/settings.css">
+    <title>Control Panel</title>
+</head>
+<body>
+    <p id="message-popup"></p>
+    <p id="top-panel">Wifi-Test-Device</p>
+    <nav>
+        <a href="/"><p>Home</p></a>
+        <a href="/devices.html"><p>Devices</p></a>
+        <a class="selected" href="/settings.html"><p>Settings</p></a>
+    </nav>
+    <div id="settings-container">
+        <div class="container">
+            <div id="packet-settings">
+                <h3>Packet Manipulation</h3>
+                <label>Loss (%)</label>
+                <label>Corruption (%)</label>
+                <label>Duplication (%)</label>
+                <input id="packet-loss-number" type="number">
+                <input id="packet-corruption-number" type="number">
+                <input id="packet-duplication-number" type="number">
+            </div>
+            <button onmouseup="savePacketManipulation(this)" ontouched="savePacketManipulation(this)" class="button-save">Save</button>
+        </div>
+        <div class="container">
+            <div id="latency-settings">
+                <h3>Latency</h3>
+                <label>Base Latency (ms)</label>
+                <label>Variation (ms)</label>
+                <label>Correlation (%)</label>
+                <input id="latency-base-number" type="number">
+                <input id="latency-variation-number" type="number">
+                <input id="latency-correlation-number" type="number">
+            </div>
+            <button onmouseup="saveLatency(this)" ontouched="saveLatency(this)" class="button-save">Save</button>
+        </div>
+        <div class="container">
+            <div id="bandwidth-settings">
+                <h3>Bandwidth</h3>
+                <label>Rate (kbit/mbit/gbit)</label>
+                <label>Burst (kbit/mbit/gbit)</label>
+                <label>Max Latency (ms)</label>
+                <input id="bandwidth-rate-number" type="text">
+                <input id="bandwidth-burst-number" type="text">
+                <input id="bandwidth-max-number" type="number">
+            </div>
+            <button onmouseup="saveBandwidth(this)" ontouched="saveBandwidth(this)" class="button-save">Save</button>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/settings.js"></script>
+</body>
+</html>
