@@ -23,6 +23,7 @@ func getRouter() *mux.Router {
 func initRouter() {
 	router.HandleFunc("/api/devices", fetchDevices).Methods("GET")
 	router.HandleFunc("/api/settings", handleSettings).Methods("GET", "POST")
+	router.HandleFunc("/api/status", fetchStatus).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 	router.Use(mux.CORSMethodMiddleware(router))
@@ -78,7 +79,6 @@ func updateSettings(responseWriter http.ResponseWriter, request *http.Request) {
 		fmt.Printf("Could not read request: %s\r\n", readError)
 		responseWriter.WriteHeader(http.StatusInternalServerError)
 		responseWriter.Write([]byte("Could not read request."))
-		responseWriter.WriteHeader(500)
 		return
 	}
 
@@ -88,10 +88,31 @@ func updateSettings(responseWriter http.ResponseWriter, request *http.Request) {
 		fmt.Printf("Could not unmarshal request: %s\r\n", unmarshalError)
 		responseWriter.WriteHeader(http.StatusInternalServerError)
 		responseWriter.Write([]byte("Could not unmarshal request."))
-		responseWriter.WriteHeader(400)
 		return
 	}
 
 	wifi.UpdateGlobalRules()
 	responseWriter.WriteHeader(200)
+}
+
+func fetchStatus(responseWriter http.ResponseWriter, request *http.Request) {
+	status, err := wifi.GetNetworkStatus()
+
+	responseWriter.Header().Set("Content-Type", "application/json")
+
+	if err != nil {
+		responseWriter.WriteHeader(http.StatusInternalServerError)
+		responseWriter.Write([]byte("Could not get network status."))
+		return
+	}
+
+	json, marshalError := json.Marshal(status)
+
+	if marshalError != nil {
+		responseWriter.WriteHeader(http.StatusInternalServerError)
+		responseWriter.Write([]byte("Failed to marshal network status."))
+		return
+	}
+
+	responseWriter.Write([]byte(json))
 }

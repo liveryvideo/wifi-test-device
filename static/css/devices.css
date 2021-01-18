@@ -4,29 +4,6 @@
     height: 50vh;
 }
 
-.container table {
-    border-collapse: collapse;
-    border: 1px solid black;
-}
-
-.container table th {
-    color: whitesmoke;
-    background-color: rgb(24,144,255);
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.container table tr:nth-child(2) {
-    background-color: rgb(235,235,235);
-}
-
-.container table tr td {
-    border: 1px solid black;
-    text-align: center;
-    padding: 5px;
-    margin: 0;
-}
-
 .device {
     width: 18.5%;
     height: 25px;

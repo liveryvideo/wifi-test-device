@@ -55,12 +55,6 @@ nav a p {
     background-color: rgb(24, 144, 255);
 }
 
-.container {
-    margin-left: 8px;
-    background-color: white;
-    padding: 10px;
-}
-
 .button-save {
     width: 100px;
     height: 25px;
@@ -76,4 +70,35 @@ nav a p {
 .button-save:active {
     background-color: rgb(16, 96, 172);
     border: 1px solid  rgb(11, 69, 122);
+}
+
+.container {
+    margin-left: 8px;
+    background-color: white;
+    padding: 10px;
+}
+
+.container table {
+    display: inline-block;
+    border-collapse: collapse;
+    border: 1px solid black;
+    margin: 5px 10px;
+}
+
+.container table th {
+    color: whitesmoke;
+    background-color: rgb(24,144,255);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.container table tr:nth-child(2n) {
+    background-color: rgb(235,235,235);
+}
+
+.container table tr td {
+    border: 1px solid black;
+    text-align: center;
+    padding: 5px;
+    margin: 0;
 }

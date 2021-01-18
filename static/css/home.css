@@ -1,0 +1,8 @@
+td, th {
+    padding: 5px;
+}
+
+.container {
+    display: inline-block;
+    width: 50%;
+}
