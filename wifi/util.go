@@ -14,7 +14,7 @@ type Log struct {
 }
 
 func init() {
-	logFile, err := os.Create("log.txt")
+	logFile, err := os.Create("out.log")
 	if err != nil {
 		log.Println("Could not create log file:", err)
 	}
@@ -41,7 +41,7 @@ func printOutput(output []byte, err error) {
 }
 
 func FetchLogs() []Log {
-	logFile, err := os.Open("log.txt")
+	logFile, err := os.Open("out.log")
 	data, err := ioutil.ReadAll(logFile)
 	if err != nil {
 		log.Println("Could not open log file:", err)
