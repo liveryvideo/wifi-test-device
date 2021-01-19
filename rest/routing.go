@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"wifi-test-device/wifi"
 
@@ -24,6 +25,7 @@ func initRouter() {
 	router.HandleFunc("/api/devices", fetchDevices).Methods("GET")
 	router.HandleFunc("/api/settings", handleSettings).Methods("GET", "POST")
 	router.HandleFunc("/api/status", fetchStatus).Methods("GET")
+	router.HandleFunc("/api/logs", fetchLogs).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 	router.Use(mux.CORSMethodMiddleware(router))
@@ -115,4 +117,19 @@ func fetchStatus(responseWriter http.ResponseWriter, request *http.Request) {
 	}
 
 	responseWriter.Write([]byte(json))
+}
+
+func fetchLogs(responseWriter http.ResponseWriter, request *http.Request) {
+	logs := wifi.FetchLogs()
+	json, err := json.Marshal(logs)
+
+	if err != nil {
+		log.Println("Failed to marshal logs:", err)
+		responseWriter.WriteHeader(500)
+		responseWriter.Write([]byte("Failed to marshal logs."))
+		return
+	}
+
+	responseWriter.Header().Set("Content-Type", "application/json")
+	responseWriter.Write(json)
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/home.css">
+    <link rel="stylesheet" type="text/css" href="css/logs.css">
     <title>Control Panel</title>
 </head>
 <body>
@@ -15,31 +15,17 @@
         <a href="/settings.html"><p>Settings</p></a>
         <a class="selected" href="/logs.html"><p>Logs</p></a>
     </nav>
-    <div id="home-container" class="container">
+    <div id="logs-container" class="container">
         <h3>
-            Device Information
+            Logs
         </h3>
-        <table>
+        <table id="logs">
             <tr>
-                <th>
-                    Information
-                </th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>Operating system</td>
-                <td>os</td>
-            </tr>
-            <tr>
-                <td>Version</td>
-                <td>0.1</td>
+                <th>Information</th>
+                <th>Time</th>
             </tr>
         </table>
-        <hr>
-        <h3>
-            Network Interfaces
-        </h3>
     </div>
-    <script type="text/javascript" src="js/home.js"></script>
+    <script type="module" src="js/logs.js"></script>
 </body>
 </html>

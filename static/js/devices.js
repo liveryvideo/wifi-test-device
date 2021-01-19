@@ -1,3 +1,5 @@
+import TableBuilder from "./modules/TableBuilder.js";
+
 getDevices();
 
 setInterval(getDevices, 1000);
@@ -6,39 +8,26 @@ function setDevices(request) {
     const deviceContainer = document.getElementById("table-container");
     deviceContainer.innerHTML = "";
 
-    const table = document.createElement("table");
-    
-    const headers = document.createElement("tr");
-    addTableData(headers, "Host Name", "th");
-    addTableData(headers, "Client Identifier", "th");
-    addTableData(headers, "Link Address", "th");
-    addTableData(headers, "Expiration Time", "th");
-    addTableData(headers, "Connected", "th");
+    let table = document.createElement("table");
 
-    table.appendChild(headers);
-    deviceContainer.append(table);
+    const headers = TableBuilder.addTableRow(table);
+    TableBuilder.addTableRow(table, ["Host Name", "Client Identifier", "Link Address", "Expiration Time", "Connected"], "th")
 
     const response = JSON.parse(request.response)
     for(let i = 0; i < response.length; i++){
-        const deviceRow = createDeviceRow(response[i])
-        table.appendChild(deviceRow)
+        const deviceRow = createDeviceRow(table, response[i])
     }
+
+    deviceContainer.append(table);
 }
 
-function addTableData(tableRow, contents, tag="td"){
-    const dataElement = document.createElement(tag);
-    dataElement.innerHTML = contents;
-    tableRow.appendChild(dataElement);
-}
-
-function createDeviceRow(device){
-    const deviceRow = document.createElement("tr");
-    addTableData(deviceRow, device.HostName);
-    addTableData(deviceRow, device.ClientIdentifier);
-    addTableData(deviceRow, device.LinkAddress);
-    addTableData(deviceRow, device.ExpirationTime);
-    addTableData(deviceRow, device.Connected);
-    return deviceRow;
+function createDeviceRow(table, device){
+    const deviceRow = TableBuilder.addTableRow(table);
+    TableBuilder.addTableData(deviceRow, device.HostName);
+    TableBuilder.addTableData(deviceRow, device.ClientIdentifier);
+    TableBuilder.addTableData(deviceRow, device.LinkAddress);
+    TableBuilder.addTableData(deviceRow, device.ExpirationTime);
+    TableBuilder.addTableData(deviceRow, device.Connected);
 }
 
 function getDevices() {

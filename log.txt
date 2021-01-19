@@ -1,0 +1,11 @@
+2021/01/19 15:29:07 : Performing command: tc [qdisc del dev wlan0 root]
+2021/01/19 15:29:07 : Performing command: tc [qdisc add dev wlan0 root handle 1:0 tbf rate 1gbit burst 5mbit latency 5000ms]
+2021/01/19 15:29:07 : Performing command: tc [qdisc add dev wlan0 parent 1:0 netem]
+2021/01/19 15:29:07 : Performing command: tc [qdisc del dev wlan0 root]
+2021/01/19 15:29:07 : Performing command: tc [qdisc add dev wlan0 root handle 1:0 tbf rate 1gbit burst 5mbit latency 5000ms]
+2021/01/19 15:29:07 : Performing command: tc [qdisc add dev wlan0 parent 1:0 netem]
+2021/01/19 15:29:10 : Performing command: cat [/var/lib/misc/dnsmasq.leases]
+2021/01/19 15:29:10 : Performing command: arp []
+2021/01/19 15:29:10 : Failed to run command: exit status 1
+2021/01/19 15:29:11 : Performing command: ifconfig []
+2021/01/19 15:29:14 : Performing command: cat [/var/lib/misc/dnsmasq.leases]

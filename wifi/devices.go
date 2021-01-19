@@ -1,7 +1,7 @@
 package wifi
 
 import (
-	"fmt"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -17,7 +17,7 @@ type Device struct {
 func checkDevicesConnectionStatus(devices *[]Device) {
 	out, err := performCommand("arp")
 	if err != nil {
-		fmt.Printf("Failed to run command: %s\r\n", err)
+		log.Printf("Failed to run command: %s\r\n", err)
 	}
 
 	raw := string(out)
@@ -41,7 +41,7 @@ func GetLeasedDevices() []Device {
 	out, err := performCommand("cat", "/var/lib/misc/dnsmasq.leases")
 
 	if err != nil {
-		fmt.Printf("Failed to run command: %s\r\n", err)
+		log.Printf("Failed to run command: %s\r\n", err)
 	}
 
 	raw := string(out)
@@ -49,18 +49,18 @@ func GetLeasedDevices() []Device {
 
 	devices := make([]Device, len(lines)-1)
 
-	for i, line := range lines {
-		rawDevice := strings.Fields(line)
+	for i := range devices {
+		rawDevice := strings.Fields(lines[i])
 
 		if len(rawDevice) < 4 {
-			fmt.Printf("Failed to parse device: %s\r\n", "Invalid number of arguments.")
+			log.Printf("Failed to parse device: %s\r\n", "Invalid number of arguments.")
 			continue
 		}
 
 		expirationTime, err := strconv.Atoi(rawDevice[0])
 
 		if err != nil {
-			fmt.Printf("Failed to parse device: %s\r\n", err)
+			log.Printf("Failed to parse device: %s\r\n", err)
 			continue
 		}
 

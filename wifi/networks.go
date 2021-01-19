@@ -1,7 +1,7 @@
 package wifi
 
 import (
-	"fmt"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -23,7 +23,7 @@ func GetNetworkStatus() ([]NetworkStatus, error) {
 	out, commandError := performCommand("ifconfig")
 
 	if commandError != nil {
-		fmt.Printf("Could not get network status. %s\r\n", commandError)
+		log.Printf("Could not get network status. %s\r\n", commandError)
 		return nil, commandError
 	}
 
@@ -34,11 +34,8 @@ func GetNetworkStatus() ([]NetworkStatus, error) {
 
 func parseNetworks(rawNetworks []string) []NetworkStatus {
 	networks := make([]NetworkStatus, len(rawNetworks)-1)
-	for i, rawNetwork := range rawNetworks {
-		if i >= len(networks) {
-			continue
-		}
-		lines := strings.Split(rawNetwork, "\n")
+	for i := range networks {
+		lines := strings.Split(rawNetworks[i], "\n")
 		networks[i] = NetworkStatus{}
 		for l, line := range lines {
 			fields := strings.Fields(line)

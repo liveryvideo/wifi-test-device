@@ -1,3 +1,5 @@
+import TableBuilder from "./modules/TableBuilder.js";
+
 updateStatus();
 
 const homeContainer = document.getElementById("home-container");
@@ -8,7 +10,7 @@ async function updateStatus(){
     networks = JSON.parse(response);
 
     for(network of networks) {
-        buildTable(network);
+        buildNetworkTable(network);
     }
 }
 
@@ -21,18 +23,16 @@ function fetchDeviceStatus() {
     });
 }
 
-function buildTable(network) {
+function buildNetworkTable(network) {
     const table = document.createElement("table");
-    const header = "<tr><th>" + network.Name.substring(0,network.Name.length-1) + "</th><th></th></tr>";
+    const header = TableBuilder.addTableRow(table, "th", [network.Name.substring(0,network.Name.length-1), ""]);
 
     table.innerHTML = header;
 
     const keys = Object.keys(network)
     for(key of keys) {
         if(key == "Name"){continue;}
-        const tableRow = document.createElement("tr");
-        tableRow.innerHTML = "<tr><td>" + key + "</td><td>" + network[key] + "</td></tr>"
-        table.appendChild(tableRow);
+        const tableRow = TableBuilder.addTableRow(table, [key, network[key]]);
     }
     
     homeContainer.appendChild(table);

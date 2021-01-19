@@ -3,6 +3,5 @@ td, th {
 }
 
 .container {
-    display: inline-block;
     width: 50%;
 }

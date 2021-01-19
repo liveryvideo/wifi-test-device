@@ -1,0 +1,15 @@
+td, th {
+    padding: 5px;
+}
+
+.container {
+    width: 50%;
+}
+
+table tr td {
+    font-size: small;
+}
+
+table tr td{
+    text-align: left !important;
+}
