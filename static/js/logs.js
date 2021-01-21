@@ -7,7 +7,7 @@ const logsContainer = document.getElementById("logs-container");
 async function updateLogs(){
     const response = await fetchLogs();
 
-    logs = JSON.parse(response);
+    const logs = JSON.parse(response);
     buildLogTable(logs);
 }
 

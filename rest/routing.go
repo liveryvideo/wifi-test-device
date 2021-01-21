@@ -6,10 +6,19 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"runtime"
 	"wifi-test-device/wifi"
 
 	"github.com/gorilla/mux"
 )
+
+type HostDeviceStatus struct {
+	HostName                  string
+	OperatingSystem           string
+	TestDeviceSoftwareVersion string
+	NetworkStatus             []wifi.NetworkStatus
+}
 
 var router *mux.Router
 
@@ -108,7 +117,19 @@ func fetchStatus(responseWriter http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	json, marshalError := json.Marshal(status)
+	hostName, err := os.Hostname()
+	if err != nil {
+		log.Println("Failed to fetch host-device name:", err)
+		hostName = "Unknown"
+	}
+
+	hostDeviceStatus := HostDeviceStatus{
+		HostName:                  hostName,
+		OperatingSystem:           runtime.GOOS,
+		TestDeviceSoftwareVersion: "1.0",
+		NetworkStatus:             status,
+	}
+	json, marshalError := json.Marshal(hostDeviceStatus)
 
 	if marshalError != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
