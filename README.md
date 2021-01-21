@@ -33,6 +33,19 @@ Additionally you can `go build main.go` and natively execute the resulting image
 
 The server should now be running and can be accessed on your `localhost` on port 80.
 
+# Automatic installation
+Within the setup directory is a bash script called `setup.sh`.
+Run this using `sudo sh setup.sh` to install and configure the WiFi access point.
+
+Besides installing the necessary programs this script overwrites the following files:
+`/etc/dnsmasq.conf`
+`/etc/dhcpcd.conf`
+`/etc/sysctl.d/routed-ap.conf`
+`/etc/hostapd/hostapd.conf`
+You will be prompted with a (y/n), allowing you to skip any or all of these operations.
+
+After the installation has completed, reboot the system and the network should show up with the default network name; unless changed in `/etc/hostapd/hostapd.conf`.
+
 
 # Troubleshooting
 If the server returns a 404 on the homepage but the api is accessible.

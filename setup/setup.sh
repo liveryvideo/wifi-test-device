@@ -42,9 +42,13 @@ cp -i dnsmasq.conf /etc/dnsmasq.conf
 # Ensure WiFi radio isn't blocked.
 rfkill unblock wlan
 
-# Copy over hostapd.conf
+# Copy over hostapd.conf.
 cp -i hostapd.conf /etc/hostapd/hostapd.conf
 
+# Install iproute2 for traffic control.
+apt install iproute2
+
+echo " "
 echo "Installation complete, please check for any errors and resolve them."
 echo "If there are no errors, please reboot the system and all should be setup to go."
 echo " "
