@@ -9,7 +9,16 @@ apt update
 apt upgrade
 
 # The software managing traffic control runs on golang.
-apt install golang-go
+wget https://dl.google.com/go/go1.15.7.linux-armv6l.tar.gz
+
+# Unpack package to go's directory.
+echo "Unpacking go.."
+tar -C /usr/local -xzf go1.15.7.linux-armv6l.tar.gz
+
+# Remove package after unzipping.
+rm go1.15.7.linux-armv6l.tar.gz
+
+export PATH=$PATH:/usr/local/go/bin
 
 # In order to work as an access point, the Raspberry Pi needs to have the hostapd access point software package installed.
 apt install hostapd
@@ -25,10 +34,10 @@ apt install dnsmasq
 DEBIAN_FRONTEND=noninteractive apt install -y netfilter-persistent iptables-persistent
 
 # Copy over dhcpcd.conf
-cp -i dhcpcd.conf /etc/dhcpcd.conf
+cp dhcpcd.conf /etc/dhcpcd.conf
 
 # Copy over routed-ap.conf
-cp -i routed-ap.conf /etc/sysctl.d/routed-ap.conf
+cp routed-ap.conf /etc/sysctl.d/routed-ap.conf
 
 # Add firewall rule.
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
@@ -37,16 +46,27 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 netfilter-persistent save
 
 # Copy over dnsmasq.conf
-cp -i dnsmasq.conf /etc/dnsmasq.conf
+cp dnsmasq.conf /etc/dnsmasq.conf
 
 # Ensure WiFi radio isn't blocked.
 rfkill unblock wlan
 
 # Copy over hostapd.conf.
-cp -i hostapd.conf /etc/hostapd/hostapd.conf
+cp hostapd.conf /etc/hostapd/hostapd.conf
 
 # Install iproute2 for traffic control.
 apt install iproute2
+
+echo "Configuring service.."
+cp testdevice.service /etc/systemd/system/testdevice.service
+
+echo "Building main.go.."
+cd ..
+go build main.go
+
+echo "Starting service.."
+systemctl start testdevice
+systemctl enable testdevice
 
 echo " "
 echo "Installation complete, please check for any errors and resolve them."
