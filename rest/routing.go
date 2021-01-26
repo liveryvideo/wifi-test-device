@@ -31,18 +31,26 @@ func getRouter() *mux.Router {
 }
 
 func initRouter() {
-	router.HandleFunc("/api/devices", fetchDevices).Methods("GET")
-	router.HandleFunc("/api/settings", handleSettings).Methods("GET", "POST")
-	router.HandleFunc("/api/status", fetchStatus).Methods("GET")
-	router.HandleFunc("/api/logs", fetchLogs).Methods("GET")
+	apiRouter := router.PathPrefix("/api").Subrouter()
+	apiRouter.Use(headerAdapter)
+
+	apiRouter.HandleFunc("/devices", fetchDevices).Methods("GET")
+	apiRouter.HandleFunc("/settings", handleSettings).Methods("GET", "POST")
+	apiRouter.HandleFunc("/status", fetchStatus).Methods("GET")
+	apiRouter.HandleFunc("/logs", fetchLogs).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 	router.Use(mux.CORSMethodMiddleware(router))
 }
 
-func fetchDevices(responseWriter http.ResponseWriter, request *http.Request) {
-	responseWriter.Header().Set("Content-Type", "application/json")
+func headerAdapter(nextHandler http.Handler) http.Handler {
+	return http.HandlerFunc(func(responseWriter http.ResponseWriter, request *http.Request) {
+		responseWriter.Header().Set("Content-Type", "application/json")
+		nextHandler.ServeHTTP(responseWriter, request)
+	})
+}
 
+func fetchDevices(responseWriter http.ResponseWriter, request *http.Request) {
 	json, err := json.Marshal(wifi.GetLeasedDevices())
 	if err != nil {
 		fmt.Printf("Could not marshal devices: %s\r\n", err)
@@ -66,8 +74,6 @@ func handleSettings(responseWriter http.ResponseWriter, request *http.Request) {
 }
 
 func fetchSettings(responseWriter http.ResponseWriter, request *http.Request) {
-	responseWriter.Header().Set("Content-Type", "application/json")
-
 	json, err := json.Marshal(wifi.GetGlobalRules())
 
 	if err != nil {
@@ -108,9 +114,6 @@ func updateSettings(responseWriter http.ResponseWriter, request *http.Request) {
 
 func fetchStatus(responseWriter http.ResponseWriter, request *http.Request) {
 	status, err := wifi.GetNetworkStatus()
-
-	responseWriter.Header().Set("Content-Type", "application/json")
-
 	if err != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
 		responseWriter.Write([]byte("Could not get network status."))
@@ -150,7 +153,5 @@ func fetchLogs(responseWriter http.ResponseWriter, request *http.Request) {
 		responseWriter.Write([]byte("Failed to marshal logs."))
 		return
 	}
-
-	responseWriter.Header().Set("Content-Type", "application/json")
 	responseWriter.Write(json)
 }
