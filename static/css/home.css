@@ -5,3 +5,7 @@ td, th {
 .container {
     width: 50%;
 }
+
+table tr td{
+    text-align: left !important;
+}

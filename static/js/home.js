@@ -48,12 +48,17 @@ function buildHostDeviceTable(status) {
 
 function buildNetworkTable(network) {
     const table = document.createElement("table");
-    const header = TableBuilder.addTableRow(table, [network.Name.substring(0,network.Name.length-1), ""], "th");
+    const header = TableBuilder.addTableRow(table, [network.Name, ""], "th");
 
     const keys = Object.keys(network)
     for(let key of keys) {
         if(key == "Name"){continue;}
+        if(key == "Addresses"){continue;}
         const tableRow = TableBuilder.addTableRow(table, [key, network[key]]);
+    }
+
+    for(let address of network.Addresses) {
+        const tableRow = TableBuilder.addTableRow(table, [address.Name, address.Address]);
     }
     
     homeContainer.appendChild(table);

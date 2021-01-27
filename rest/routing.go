@@ -17,7 +17,7 @@ type HostDeviceStatus struct {
 	HostName                  string
 	OperatingSystem           string
 	TestDeviceSoftwareVersion string
-	NetworkStatus             []wifi.NetworkStatus
+	NetworkStatus             []wifi.NetworkInterface
 }
 
 var router *mux.Router
@@ -113,16 +113,16 @@ func updateSettings(responseWriter http.ResponseWriter, request *http.Request) {
 }
 
 func fetchStatus(responseWriter http.ResponseWriter, request *http.Request) {
-	status, err := wifi.GetNetworkStatus()
-	if err != nil {
+	status, interfaceError := wifi.GetNetworkInterfaces()
+	if interfaceError != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
 		responseWriter.Write([]byte("Could not get network status."))
 		return
 	}
 
-	hostName, err := os.Hostname()
-	if err != nil {
-		log.Println("Failed to fetch host-device name:", err)
+	hostName, hostNameError := os.Hostname()
+	if hostNameError != nil {
+		log.Println("Failed to fetch host-device name:", hostNameError)
 		hostName = "Unknown"
 	}
 
