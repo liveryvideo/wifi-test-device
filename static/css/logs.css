@@ -13,3 +13,8 @@ table tr td {
 table tr td{
     text-align: left !important;
 }
+
+button {
+    display: inline-block;
+    vertical-align: top;
+}

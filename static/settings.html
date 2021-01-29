@@ -27,7 +27,7 @@
                 <input id="packet-corruption-number" type="number">
                 <input id="packet-duplication-number" type="number">
             </div>
-            <button onmouseup="savePacketManipulation(this)" ontouched="savePacketManipulation(this)" class="button-save">Save</button>
+            <button id="button-packet-manipulation" class="button-save">Save</button>
         </div>
         <div class="container">
             <div id="latency-settings">
@@ -39,7 +39,7 @@
                 <input id="latency-variation-number" type="number">
                 <input id="latency-correlation-number" type="number">
             </div>
-            <button onmouseup="saveLatency(this)" ontouched="saveLatency(this)" class="button-save">Save</button>
+            <button id="button-latency" class="button-save">Save</button>
         </div>
         <div class="container">
             <div id="bandwidth-settings">
@@ -51,7 +51,7 @@
                 <input id="bandwidth-burst-number" type="text">
                 <input id="bandwidth-max-number" type="number">
             </div>
-            <button onmouseup="saveBandwidth(this)" ontouched="saveBandwidth(this)" class="button-save">Save</button>
+            <button id="button-bandwidth" class="button-save">Save</button>
         </div>
     </div>
     <script type="module" src="/js/settings.js"></script>

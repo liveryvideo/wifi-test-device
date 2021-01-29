@@ -13,6 +13,12 @@ type Log struct {
 	Time  string
 }
 
+type Logs struct {
+	Total     int
+	Remaining int
+	Logs      []Log
+}
+
 func init() {
 	logFile, err := os.Create("out.log")
 	if err != nil {
@@ -40,17 +46,47 @@ func printOutput(output []byte, err error) {
 	}
 }
 
-func FetchLogs() []Log {
+func FetchLogs(start int, end int) Logs {
 	logFile, err := os.Open("out.log")
+
 	data, err := ioutil.ReadAll(logFile)
+
 	if err != nil {
 		log.Println("Could not open log file:", err)
 	}
 
-	lines := strings.Split(string(data), "\n")
-	logs := make([]Log, len(lines)-1)
+	raw := string(data)
+	if strings.LastIndex(raw, "\n") == len(raw)-1 {
+		raw = raw[0 : len(raw)-1]
+	}
 
-	for i := range logs {
+	lines := strings.Split(raw, "\n")
+
+	if start < 0 {
+		start = 0
+	}
+
+	if end < 1 {
+		end = len(lines)
+	}
+
+	if start > len(lines) {
+		start = len(lines)
+	}
+
+	if end > len(lines) {
+		end = len(lines)
+	}
+
+	total := len(lines)
+
+	lines = lines[start:end]
+
+	remaining := total - (start + end)
+
+	logs := make([]Log, len(lines))
+
+	for i, _ := range logs {
 		args := strings.SplitN(lines[i], ": ", 2)
 
 		var message string
@@ -62,11 +98,21 @@ func FetchLogs() []Log {
 			message = args[0]
 		}
 
+		if len(message) == 0 && len(time) == 0 {
+			continue
+		}
+
 		logs[i] = Log{
 			Value: message,
 			Time:  time,
 		}
 	}
 
-	return logs
+	logsContainer := Logs{
+		Total:     total,
+		Remaining: remaining,
+		Logs:      logs,
+	}
+
+	return logsContainer
 }

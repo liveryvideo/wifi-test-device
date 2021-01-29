@@ -22,7 +22,7 @@ func GetNetworkInterfaces() ([]NetworkInterface, error) {
 	rawInterfaces, interfaceError := net.Interfaces()
 
 	if interfaceError != nil {
-		log.Printf("Could not get network status. %s\r\n", interfaceError)
+		log.Printf("Could not get network status. %s\n", interfaceError)
 		return nil, interfaceError
 	}
 
@@ -39,7 +39,7 @@ func GetNetworkInterfaces() ([]NetworkInterface, error) {
 		}
 
 		if err != nil {
-			log.Printf("Failed to parse network interface: %s\r\n", err)
+			log.Printf("Failed to parse network interface: %s\n", err)
 		}
 
 		networkInterfaces[i] = NetworkInterface{

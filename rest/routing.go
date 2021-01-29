@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+	"strconv"
 	"wifi-test-device/wifi"
 
 	"github.com/gorilla/mux"
@@ -144,7 +145,19 @@ func fetchStatus(responseWriter http.ResponseWriter, request *http.Request) {
 }
 
 func fetchLogs(responseWriter http.ResponseWriter, request *http.Request) {
-	logs := wifi.FetchLogs()
+	start, err := strconv.Atoi(request.URL.Query().Get("start"))
+
+	if err != nil {
+		start = 0
+	}
+
+	end, err := strconv.Atoi(request.URL.Query().Get("end"))
+
+	if err != nil {
+		end = -1
+	}
+
+	logs := wifi.FetchLogs(start, end)
 	json, err := json.Marshal(logs)
 
 	if err != nil {

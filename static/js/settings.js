@@ -1,5 +1,13 @@
 getSettings();
 
+const ButtonLatency = document.getElementById("button-latency");
+const ButtonBandwidth = document.getElementById("button-bandwidth");
+const ButtonPacketManipulation = document.getElementById("button-packet-manipulation");
+
+ButtonLatency.addEventListener("click", ()=>{saveLatency()}, false);
+ButtonBandwidth.addEventListener("click", ()=>{saveBandwidth()}, false);
+ButtonPacketManipulation.addEventListener("click", ()=>{savePacketManipulation()}, false);
+
 function setSettings(request){
     const response = JSON.parse(request.response);
     

@@ -19,7 +19,7 @@ type Device struct {
 func checkDevicesConnectionStatus(devices *[]Device) {
 	out, err := performCommand("arp")
 	if err != nil {
-		log.Printf("Failed to run command: %s\r\n", err)
+		log.Printf("Failed to run command: %s\n", err)
 	}
 
 	raw := string(out)
@@ -43,13 +43,13 @@ func GetLeasedDevices() []Device {
 	file, err := os.Open("/var/lib/misc/dnsmasq.leases")
 
 	if err != nil {
-		log.Printf("Failed to open file: %s\r\n", err)
+		log.Printf("Failed to open file: %s\n", err)
 	}
 
 	out, err := ioutil.ReadAll(file)
 
 	if err != nil {
-		log.Printf("Failed to read file: %s\r\n", err)
+		log.Printf("Failed to read file: %s\n", err)
 	}
 
 	raw := string(out)
@@ -61,14 +61,14 @@ func GetLeasedDevices() []Device {
 		rawDevice := strings.Fields(lines[i])
 
 		if len(rawDevice) < 4 {
-			log.Printf("Failed to parse device: %s\r\n", "Invalid number of arguments.")
+			log.Printf("Failed to parse device: %s\n", "Invalid number of arguments.")
 			continue
 		}
 
 		expirationTime, err := strconv.Atoi(rawDevice[0])
 
 		if err != nil {
-			log.Printf("Failed to parse device: %s\r\n", err)
+			log.Printf("Failed to parse device: %s\n", err)
 			continue
 		}
 
