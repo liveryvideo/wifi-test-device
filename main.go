@@ -1,8 +1,8 @@
 package main
 
 import (
-	"wifi-test-device/rest"
-	"wifi-test-device/wifi"
+	rest "bitbucket.org/exmachina/wifi-test-device/rest"
+	wifi "bitbucket.org/exmachina/wifi-test-device/wifi"
 )
 
 func main() {

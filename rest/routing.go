@@ -9,7 +9,8 @@ import (
 	"os"
 	"runtime"
 	"strconv"
-	"wifi-test-device/wifi"
+
+	"bitbucket.org/exmachina/wifi-test-device/wifi"
 
 	"github.com/gorilla/mux"
 )
