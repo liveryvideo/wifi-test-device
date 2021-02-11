@@ -5,8 +5,17 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
+echo "Fetching mercurial.."
+add-apt-repository -y ppa:mercurial-ppa/releases
+
 apt update
 apt upgrade
+
+echo "Intalling pip.."
+apt-get install -y python-pip python-dev
+
+echo "Installing mercurial.."
+pip install mercurial --upgrade
 
 # The software managing traffic control runs on golang.
 wget https://dl.google.com/go/go1.15.7.linux-armv6l.tar.gz
@@ -16,9 +25,16 @@ echo "Unpacking go.."
 tar -C /usr/local -xzf go1.15.7.linux-armv6l.tar.gz
 
 # Remove package after unzipping.
+echo "Removing package.."
 rm go1.15.7.linux-armv6l.tar.gz
 
+echo "Adding go bin to PATH.."
+echo "PATH=$PATH:/usr/local/go/bin" >> ~/.bashrc
+echo "GOPATH=/home/pi/go" >> ~/.bashrc
+
+echo "Adding gopath to local shell.."
 export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$GOPATH:/home/pi/go
 
 # In order to work as an access point, the Raspberry Pi needs to have the hostapd access point software package installed.
 apt install hostapd
@@ -60,13 +76,26 @@ apt install iproute2
 echo "Configuring service.."
 cp testdevice.service /etc/systemd/system/testdevice.service
 
-echo "Building main.go.."
 cd ..
+
+echo "Copying to src.."
+mkdir -p /home/pi/go/src/bitbucket.org/exmachina/wifi-test-device
+cp -r . /home/pi/go/src/bitbucket.org/exmachina/wifi-test-device
+
+cd /home/pi/go/src/bitbucket.org/exmachina/wifi-test-device
+
+echo "Getting dependencies.."
+go get
+
+echo "Building main.go.."
 go build main.go
 
 echo "Starting service.."
 systemctl start testdevice
 systemctl enable testdevice
+
+echo "Reloading daemon.."
+systemctl daemon-reload
 
 echo " "
 echo "Installation complete, please check for any errors and resolve them."
