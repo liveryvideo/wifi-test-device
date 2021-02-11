@@ -9,7 +9,7 @@ echo "Fetching mercurial.."
 add-apt-repository -y ppa:mercurial-ppa/releases
 
 apt update
-apt upgrade
+apt upgrade -y
 
 echo "Intalling pip.."
 apt-get install -y python-pip python-dev
@@ -37,14 +37,14 @@ export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$GOPATH:/home/pi/go
 
 # In order to work as an access point, the Raspberry Pi needs to have the hostapd access point software package installed.
-apt install hostapd
+apt install -y hostapd
 
 # Enable the wireless access point service and set it to start when your Raspberry Pi boots.
 systemctl unmask hostapd
 systemctl enable hostapd
 
 # In order to provide network management services (DNS, DHCP) to wireless clients, the Raspberry Pi needs to have the dnsmasq software package installed.
-apt install dnsmasq
+apt install -y dnsmasq
 
 # Finally, install netfilter-persistent and its plugin iptables-persistent. This utilty helps by saving firewall rules and restoring them when the Raspberry Pi boots.
 DEBIAN_FRONTEND=noninteractive apt install -y netfilter-persistent iptables-persistent
@@ -71,7 +71,7 @@ rfkill unblock wlan
 cp hostapd.conf /etc/hostapd/hostapd.conf
 
 # Install iproute2 for traffic control.
-apt install iproute2
+apt install -y iproute2
 
 echo "Configuring service.."
 cp testdevice.service /etc/systemd/system/testdevice.service
