@@ -9,7 +9,7 @@ echo "Fetching mercurial.."
 add-apt-repository -y ppa:mercurial-ppa/releases
 
 apt update
-apt upgrade -y
+apt upgradeapt upgrade -y
 
 echo "Intalling pip.."
 apt-get install -y python-pip python-dev
@@ -88,7 +88,7 @@ echo "Getting dependencies.."
 go get
 
 echo "Building main.go.."
-go build main.go
+go build -o wifi-test-device
 
 echo "Starting service.."
 systemctl start testdevice

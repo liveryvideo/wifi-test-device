@@ -2,7 +2,7 @@
 Description=Wifi-Test-Device
 
 [Service]
-ExecStart=/home/pi/go/bin/wifi-test-device
+ExecStart=/home/pi/go/src/bitbucket.org/exmachina/wifi-test-device/wifi-test-device
 
 [Install]
 WantedBy=multi-user.target
