@@ -52,12 +52,6 @@ cp dhcpcd.conf /etc/dhcpcd.conf
 # Copy over routed-ap.conf
 cp routed-ap.conf /etc/sysctl.d/routed-ap.conf
 
-# Add firewall rule.
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-
-# Save firewall rule.
-netfilter-persistent save
-
 # Copy over dnsmasq.conf
 cp dnsmasq.conf /etc/dnsmasq.conf
 
@@ -90,6 +84,12 @@ go build -o wifi-test-device
 echo "Starting service.."
 systemctl start testdevice
 systemctl enable testdevice
+
+echo "Adding firewall rules.."
+# Add firewall rule.
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+# Save firewall rule.
+netfilter-persistent save
 
 echo "Reloading daemon.."
 systemctl daemon-reload

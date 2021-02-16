@@ -34,6 +34,8 @@ Additionally you can `go build main.go` and natively execute the resulting image
 The server should now be running and can be accessed on your `localhost` on port 80.
 
 # Automatic installation
+Make sure you have rebooted the system after the first kernel update to ensure ip-tables functions correctly.
+
 Install the nececary packages:
 
     sudo apt install git
@@ -61,3 +63,14 @@ This usually happens when launching with sudo, as this references from your home
 
 If your wifi access-point isn't visible on your other devices, make sure you have set a password that is longer than 6 characters.
 This error can only be found in the logs of hostapd. Also make sure you have rebooted either the service or the pi itself after you make changes to hostapd.
+
+
+If you are able to connect to your wifi access-point but there is no internet connection there might be an issue with your ip-tables.
+Run these two commands as sudo:
+`iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE`
+`netfilter-persistent save`
+This usually happens if you didn't reboot the system after the first system update.
+
+
+If ./setup.sh is an unknown command use these modifiers to fix this.
+`chmod 777 setup.sh`
