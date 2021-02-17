@@ -5,11 +5,8 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-echo "Fetching mercurial.."
-add-apt-repository -y ppa:mercurial-ppa/releases
-
 apt update
-apt upgradeapt upgrade -y
+apt upgrade
 
 echo "Intalling pip.."
 apt-get install -y python-pip python-dev
