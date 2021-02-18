@@ -26,9 +26,9 @@ echo "Removing package.."
 rm go1.15.7.linux-armv6l.tar.gz
 
 echo "Adding go bin to PATH.."
-export PATH=$PATH:/usr/local/go/bin
-export GOPATH=/home/pi/go
-source ~/.bashrc
+echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile.d/gopath.sh
+echo "export GOPATH=/home/pi/go" >> /etc/profile.d/gopath.sh
+source /etc/profile.d/gopath.sh
 
 # In order to work as an access point, the Raspberry Pi needs to have the hostapd access point software package installed.
 apt install -y hostapd
