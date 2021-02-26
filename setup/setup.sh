@@ -6,7 +6,7 @@ if [ "$EUID" -ne 0 ]
 fi
 
 apt update
-apt upgrade
+apt upgrade -y
 
 echo "Intalling pip.."
 apt-get install -y python-pip python-dev
