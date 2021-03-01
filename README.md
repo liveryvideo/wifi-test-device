@@ -34,16 +34,18 @@ Additionally you can `go build main.go` and natively execute the resulting image
 The server should now be running and can be accessed on your `localhost` on port 80.
 
 # Automatic installation
-Make sure you have rebooted the system after the first kernel update to ensure ip-tables functions correctly.
+Follow these steps to make sure the wifi-test-device is setup correctly.
 
-Install the nececary packages:
+- Start the raspberry pi.
+- Run `apt update`
+- Run `apt upgrade`
+- Reboot the system (important!)
+- Run `setup.sh` in `wifi-test-device/setup/setup.sh`
+- Check the logs for any errors.
+- Reboot
 
-    sudo apt install git
-
-Clone the repository.
-
-Within the setup directory is a bash script called `setup.sh`.
-Run this using `sudo ./setup.sh` to install and configure the WiFi access point.
+`setup.sh` Will setup your raspberry pi to act as a wifi access-point.
+Install golang, and a service which serves you a control panel for controlling and logging the network.
 
 Besides installing the necessary programs this script overwrites the following files:
 `/etc/dnsmasq.conf`
@@ -71,6 +73,7 @@ Run these two commands as sudo:
 `netfilter-persistent save`
 This usually happens if you didn't reboot the system after the first system update.
 
+Alternatively a more hacky sollution is to run `setup.sh` (again).
 
 If ./setup.sh is an unknown command use these modifiers to fix this.
 `chmod 777 setup.sh`
