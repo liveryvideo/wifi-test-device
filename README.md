@@ -44,8 +44,8 @@ Follow these steps to make sure the wifi-test-device is setup correctly.
 - Check the logs for any errors.
 - Reboot
 
-`setup.sh` Will setup your raspberry pi to act as a wifi access-point.
-Install golang, and a service which serves you a control panel for controlling and logging the network.
+`setup.sh` Will setup your raspberry pi to act as a wifi access-point;
+and a service which serves you a control panel for controlling and logging the network.
 
 Besides installing the necessary programs this script overwrites the following files:
 `/etc/dnsmasq.conf`
