@@ -2,11 +2,11 @@
 The wifi test device is a tool used to simulate networking problems such a packet loss, duplication or corruption.
 Combined with the ability to limit bandwidth and increase latency.
 
-This allows us to test if the livery player can recover from the myriad of problems that can occure while watching a stream.
+This allows us to test if the livery player can recover from the myriad of problems that can occur while watching a stream.
 
 
 # Specifications
-This tool is designed to work on a raspberry pi, with access to at least etho0 and wlan0.
+This tool is designed to work on a raspberry pi, with access to at least eth0 and wlan0.
 I.E: it needs to accept an ethernet input for internet access and a wifi chip to send out a wifi network for devices to connect to.
 
 The Front-end runs on plain html, css and javascript.
@@ -40,7 +40,7 @@ Follow these steps to make sure the wifi-test-device is setup correctly.
 - Run `apt update`
 - Run `apt upgrade`
 - Reboot the system (important!)
-- Run `setup.sh` in `wifi-test-device/setup/setup.sh`
+- Run `wifi-test-device/setup/setup.sh` as root
 - Check the logs for any errors.
 - Reboot
 
@@ -73,7 +73,7 @@ Run these two commands as sudo:
 `netfilter-persistent save`
 This usually happens if you didn't reboot the system after the first system update.
 
-Alternatively a more hacky sollution is to run `setup.sh` (again).
+Alternatively a more hacky solution is to run `setup.sh` (again).
 
 If ./setup.sh is an unknown command use these modifiers to fix this.
 `chmod 777 setup.sh`

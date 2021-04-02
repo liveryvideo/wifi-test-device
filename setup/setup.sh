@@ -8,11 +8,7 @@ fi
 apt update
 apt upgrade -y
 
-echo "Intalling pip.."
-apt-get install -y python-pip python-dev
-
-echo "Installing mercurial.."
-pip install mercurial --upgrade
+apt install -y git
 
 # The software managing traffic control runs on golang.
 wget https://dl.google.com/go/go1.15.7.linux-armv6l.tar.gz
@@ -60,6 +56,11 @@ cp hostapd.conf /etc/hostapd/hostapd.conf
 
 # Install iproute2 for traffic control.
 apt install -y iproute2
+
+# Disable WiFi power management
+cp wifipwr.service /etc/systemd/system/
+systemctl start wifipwr
+systemctl enable wifipwr
 
 echo "Configuring service.."
 cp testdevice.service /etc/systemd/system/testdevice.service
