@@ -2,7 +2,7 @@ import TableBuilder from "./modules/TableBuilder.js";
 
 const store = {
     page: 0,
-    range: 10,
+    range: 20,
     remaining: 0
 }
 

@@ -82,7 +82,7 @@ func FetchLogs(start int, end int) Logs {
 
 	lines = lines[start:end]
 
-	remaining := total - (start + end)
+	remaining := total - end
 
 	logs := make([]Log, len(lines))
 
