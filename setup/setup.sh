@@ -11,15 +11,15 @@ apt upgrade -y
 apt install -y git
 
 # The software managing traffic control runs on golang.
-wget https://dl.google.com/go/go1.15.7.linux-armv6l.tar.gz
+wget https://go.dev/dl/go1.20.2.linux-arm64.tar.gz
 
 # Unpack package to go's directory.
 echo "Unpacking go.."
-tar -C /usr/local -xzf go1.15.7.linux-armv6l.tar.gz
+tar -C /usr/local -xzf go1.20.2.linux-arm64.tar.gz
 
 # Remove package after unzipping.
 echo "Removing package.."
-rm go1.15.7.linux-armv6l.tar.gz
+rm go1.20.2.linux-arm64.tar.gz
 
 echo "Adding go bin to PATH.."
 echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile.d/gopath.sh
