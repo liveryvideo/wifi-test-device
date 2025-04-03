@@ -18,6 +18,7 @@ The Back-end runs a go http server. This server serves both the static Front-end
 
 The onboard wifi chip of the RapsberryPi is pretty bad.
 Using a USB wifi dongle can help a lot.
+This project expects a wifi dongle taht can do 5GHz, you need to change some of the config files if you want to use a 2.4GHz dongle.
 To disable the onboard wifi, add this line to `/boot/firmware/config.txt`:
 
     dtoverlay=disable-wifi
@@ -32,7 +33,7 @@ This assumes you have installed `Raspberry PI OS Lite (64-bit)` on the Raspberry
 - Start the raspberry pi.
 - Run `apt update`
 - Run `apt upgrade`
-- Run `sudo apt git`
+- Run `sudo apt install git`
 - Clone the repo
 - Reboot the system (important!)
 - Run `wifi-test-device/setup/setup.sh` as root
