@@ -8,7 +8,7 @@ fi
 apt update
 apt upgrade -y
 
-apt install -y git
+apt install -y git dhcpcd
 
 # The software managing traffic control runs on golang.
 wget https://go.dev/dl/go1.20.2.linux-arm64.tar.gz
@@ -53,6 +53,9 @@ rfkill unblock wlan
 
 # Copy over hostapd.conf.
 cp hostapd.conf /etc/hostapd/hostapd.conf
+# hostapd.conf override to let it wait for the wifi adapter to be fully started
+mkdir -p /etc/systemd/system/hostapd.service.d
+cp hostapd.service.d.override /etc/systemd/system/hostapd.service.d/override.conf
 
 # Install iproute2 for traffic control.
 apt install -y iproute2

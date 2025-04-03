@@ -1,0 +1,3 @@
+After=network-online.target sys-subsystem-net-devices-wlan0.device
+Wants=network-online.target
+Requires=sys-subsystem-net-devices-wlan0.device
