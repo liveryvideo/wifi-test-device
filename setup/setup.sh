@@ -1,12 +1,32 @@
 #!/bin/bash
 
+# setup.sh
+#
+# Usage:
+#   ./setup.sh [wifi_mode]
+#
+# Example:
+#   ./setup.sh            # defaults to embedded
+#   ./setup.sh external   # uses external USB Wi-Fi chip
+
+
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
   exit
 fi
 
+# Assign the first argument to WIFI_MODE if provided, otherwise default to "embedded"
+WIFI_MODE="${1:-embedded}"
+
+echo "Setting up the environment for '$WIFI_MODE' Wi-Fi"
+
 apt update
 apt upgrade -y
+
+
+if [ "$WIFI_MODE" = "external" ]; then
+   echo "dtoverlay=disable-wifi" | tee -a /boot/firmware/config.txt
+fi
 
 apt install -y git dhcpcd
 
