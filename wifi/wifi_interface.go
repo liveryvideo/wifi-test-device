@@ -62,7 +62,7 @@ func UpdateGlobalRules() {
 	baseLatency := strconv.Itoa(globalRules.LatencyRule.BaseLatency) + "ms"
 	variation := strconv.Itoa(globalRules.LatencyRule.Variation) + "ms"
 	correlation := strconv.Itoa(globalRules.LatencyRule.Correlation) + "%"
-	if globalRules.LatencyRule.BaseLatency > 10 && globalRules.LatencyRule.Correlation >= 1 {
+	if globalRules.LatencyRule.BaseLatency > 0 {
 		args = append(args, "delay", baseLatency, variation, correlation)
 	}
 
@@ -70,13 +70,13 @@ func UpdateGlobalRules() {
 	loss := strconv.Itoa(globalRules.Loss) + "%"
 	corruption := strconv.Itoa(globalRules.Corruption) + "%"
 	duplication := strconv.Itoa(globalRules.Duplication) + "%"
-	if globalRules.Loss >= 1 {
+	if globalRules.Loss > 0 {
 		args = append(args, "loss", loss)
 	}
-	if globalRules.Corruption >= 1 {
+	if globalRules.Corruption > 0 {
 		args = append(args, "corrupt", corruption)
 	}
-	if globalRules.Duplication >= 1 {
+	if globalRules.Duplication > 0 {
 		args = append(args, "duplicate", duplication)
 	}
 
