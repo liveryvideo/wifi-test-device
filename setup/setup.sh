@@ -15,14 +15,12 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-# Assign the first argument to WIFI_MODE if provided, otherwise default to "embedded"
-WIFI_MODE="${1:-embedded}"
-
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 [external|internal]"
+  exit 1
+fi
+WIFI_MODE="$1"
 echo "Setting up the environment for '$WIFI_MODE' Wi-Fi"
-
-apt update
-apt upgrade -y
-
 
 if [ "$WIFI_MODE" = "external" ]; then
    echo "dtoverlay=disable-wifi" | tee -a /boot/firmware/config.txt

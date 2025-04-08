@@ -16,27 +16,26 @@ The Back-end runs a go http server. This server serves both the static Front-end
 
 ## Wi-Fi performance
 
-The onboard wifi chip of the RapsberryPi is pretty bad.
+The onboard wifi chip of the RapsberryPi is pretty bad in terms of range and speed.
 Using a USB wifi dongle can help a lot.
 This project expects a wifi dongle taht can do 5GHz, you need to change some of the config files if you want to use a 2.4GHz dongle.
-To disable the onboard wifi, add this line to `/boot/firmware/config.txt`:
 
-    dtoverlay=disable-wifi
+If you want to use an external dongle, you can run the `setup.sh` script with the `external` parameter.
+This will disable the internal wifi chip and use the external USB wifi adapter.
 
-This should be done before performing the software installation.
-
-## Automatic installation
+## Installation
 
 Follow these steps to make sure the wifi-test-device is setup correctly.
-This assumes you have installed `Raspberry PI OS Lite (64-bit)` on the Raspberry PI already.
+This assumes you have installed `Raspberry PI OS Lite (64-bit)` on the Raspberry PI already and you are able to log into it via SSH.
+We will overwrite files and install new packages so please don't run this on a dedicated Raspberry PI as you might loose previously made configuration changes.
 
-- Start the raspberry pi.
-- Run `apt update`
-- Run `apt upgrade`
-- Run `sudo apt install git`
-- Clone the repo
+- Run `sudo apt update`
+- Run `sudo apt upgrade`
 - Reboot the system (important!)
-- Run `wifi-test-device/setup/setup.sh` as root
+- Run `sudo apt install git`
+- Run `git clone https://github.com/liveryvideo/wifi-test-device.git`
+- Run `cd wifi-test-device/setup`
+- Run `sudo ./setup.sh internal` as root
 - Check the logs for any errors.
 - Reboot
 
@@ -49,29 +48,7 @@ Besides installing the necessary programs this script overwrites the following f
 `/etc/sysctl.d/routed-ap.conf`
 `/etc/hostapd/hostapd.conf`
 
-After the installation has completed, reboot the system and the network should show up with the default network name; unless changed in `/etc/hostapd/hostapd.conf`.
-
-
-## Manual Installation
-
-Please follow the instruction below to setup the pi to be able to run GO applications and to serve as an access point.
-
-Golang installation tutorial:               https://golang.org/doc/install
-Raspberry pi access point tutorial:         https://www.raspberrypi.org/documentation/configuration/wireless/access-point-routed.md
-
-
-Next, check if `tc` (traffic control) is installed by typing the command `tc` in a terminal.
-If the command is unknown install it through:
-`apt-get install iproute` or if prompted; `apt-get install iproute2`
-
-Traffic control is what allows us to set bandwidth, latency and package manipulation on the network.
-
-After having successfully setup the pi through the tutorials above, you can now `go run main.go` in the project. (With super user access)
-
-Additionally you can `go build main.go` and natively execute the resulting image.
-
-The server should now be running and can be accessed on your `localhost` on port 80.
-
+After the installation has completed, reboot the system and the network should show up with the default network name; unless changed it in `/etc/hostapd/hostapd.conf`.
 
 ## Troubleshooting
 
