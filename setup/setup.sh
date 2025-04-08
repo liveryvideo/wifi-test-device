@@ -26,21 +26,11 @@ if [ "$WIFI_MODE" = "external" ]; then
    echo "dtoverlay=disable-wifi" | tee -a /boot/firmware/config.txt
 fi
 
-# The software managing traffic control runs on golang.
-wget https://go.dev/dl/go1.24.2.linux-arm64.tar.gz
+# Ensure WiFi radio isn't blocked.
+rfkill unblock wlan
 
-# Unpack package to go's directory.
-echo "Unpacking go.."
-tar -C /usr/local -xzf go1.24.2.linux-arm64.tar.gz
-
-# Remove package after unzipping.
-echo "Removing package.."
-rm go1.24.2.linux-arm64.tar.gz
-
-echo "Adding go bin to PATH.."
-echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile.d/gopath.sh
-echo "export GOPATH=/home/pi/go" >> /etc/profile.d/gopath.sh
-source /etc/profile.d/gopath.sh
+# Configure Wifi country
+raspi-config nonint do_wifi_country NL
 
 # Use NetworkManager to setup an IP address for the wlan interface and configure the accesspoint
 nmcli c add type wifi ifname wlan0 con-name rpi-ap autoconnect yes ssid "Test-Device-01"
@@ -63,13 +53,6 @@ nmcli c up rpi-ap
 # Copy over routed-ap.conf to enable IP forwarding
 cp routed-ap.conf /etc/sysctl.d/routed-ap.conf
 
-
-# Ensure WiFi radio isn't blocked.
-rfkill unblock wlan
-
-# Configure Wifi country
-raspi-config nonint do_wifi_country NL
-
 # Install iproute2 for traffic control.
 apt install -y iproute2
 
@@ -77,6 +60,23 @@ apt install -y iproute2
 cp wifipwr.service /etc/systemd/system/
 systemctl start wifipwr
 systemctl enable wifipwr
+
+
+# The software managing traffic control runs on golang.
+wget https://go.dev/dl/go1.24.2.linux-arm64.tar.gz
+
+# Unpack package to go's directory.
+echo "Unpacking go.."
+tar -C /usr/local -xzf go1.24.2.linux-arm64.tar.gz
+
+# Remove package after unzipping.
+echo "Removing package.."
+rm go1.24.2.linux-arm64.tar.gz
+
+echo "Adding go bin to PATH.."
+echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile.d/gopath.sh
+echo "export GOPATH=/home/pi/go" >> /etc/profile.d/gopath.sh
+source /etc/profile.d/gopath.sh
 
 echo "Configuring service.."
 cp testdevice.service /etc/systemd/system/testdevice.service
