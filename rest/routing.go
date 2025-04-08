@@ -3,7 +3,7 @@ package rest
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -92,7 +92,7 @@ func updateSettings(responseWriter http.ResponseWriter, request *http.Request) {
 	defer request.Body.Close()
 
 	globalRules := wifi.GetGlobalRules()
-	data, readError := ioutil.ReadAll(request.Body)
+	data, readError := io.ReadAll(request.Body)
 
 	if readError != nil {
 		fmt.Printf("Could not read request: %s\r\n", readError)
@@ -158,7 +158,11 @@ func fetchLogs(responseWriter http.ResponseWriter, request *http.Request) {
 		end = -1
 	}
 
-	logs := wifi.FetchLogs(start, end)
+	logs, err := wifi.FetchLogs(start, end)
+	if err != nil {
+		responseWriter.WriteHeader(500)
+		responseWriter.Write([]byte("Failed to read logs."))
+	}
 	json, err := json.Marshal(logs)
 
 	if err != nil {

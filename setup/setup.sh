@@ -6,7 +6,7 @@
 #   ./setup.sh [wifi_mode]
 #
 # Example:
-#   ./setup.sh            # defaults to embedded
+#   ./setup.sh embedded   # uses embedded Wi-Fi chip
 #   ./setup.sh external   # uses external USB Wi-Fi chip
 
 
@@ -16,7 +16,7 @@ if [ "$EUID" -ne 0 ]
 fi
 
 if [ $# -lt 1 ]; then
-  echo "Usage: $0 [external|internal]"
+  echo "Usage: $0 [external|embedded]"
   exit 1
 fi
 WIFI_MODE="$1"
@@ -25,8 +25,6 @@ echo "Setting up the environment for '$WIFI_MODE' Wi-Fi"
 if [ "$WIFI_MODE" = "external" ]; then
    echo "dtoverlay=disable-wifi" | tee -a /boot/firmware/config.txt
 fi
-
-apt install -y git dhcpcd
 
 # The software managing traffic control runs on golang.
 wget https://go.dev/dl/go1.24.2.linux-arm64.tar.gz
@@ -44,39 +42,33 @@ echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile.d/gopath.sh
 echo "export GOPATH=/home/pi/go" >> /etc/profile.d/gopath.sh
 source /etc/profile.d/gopath.sh
 
-# In order to work as an access point, the Raspberry Pi needs to have the hostapd access point software package installed.
-apt install -y hostapd
+# Use NetworkManager to setup an IP address for the wlan interface and configure the accesspoint
+nmcli c add type wifi ifname wlan0 con-name rpi-ap autoconnect yes ssid "Test-Device-01"
+nmcli c modify rpi-ap 802-11-wireless.mode ap \
+                    802-11-wireless.band a \
+                    802-11-wireless.channel 36 \
+                    802-11-wireless-security.key-mgmt wpa-psk \
+                    802-11-wireless-security.psk "LiveryTest"
 
-# Enable the wireless access point service and set it to start when your Raspberry Pi boots.
-systemctl unmask hostapd
-systemctl enable hostapd
+nmcli c modify rpi-ap ipv4.addresses 192.168.4.1/24
+nmcli c modify rpi-ap ipv4.method manual
 
-# In order to provide network management services (DNS, DHCP) to wireless clients, the Raspberry Pi needs to have the dnsmasq software package installed.
-apt install -y dnsmasq
+# Disable ipv6 for now
+nmcli c modify rpi-ap ipv6.method ignore
+# Enable DHCP for the wifi clients
+nmcli c modify rpi-ap ipv4.method shared
 
-# Finally, install netfilter-persistent and its plugin iptables-persistent. This utilty helps by saving firewall rules and restoring them when the Raspberry Pi boots.
-DEBIAN_FRONTEND=noninteractive apt install -y netfilter-persistent iptables-persistent
+nmcli c up rpi-ap
 
-# Copy over dhcpcd.conf
-cp dhcpcd.conf /etc/dhcpcd.conf
-
-# Copy over routed-ap.conf
+# Copy over routed-ap.conf to enable IP forwarding
 cp routed-ap.conf /etc/sysctl.d/routed-ap.conf
 
-# Copy over dnsmasq.conf
-cp dnsmasq.conf /etc/dnsmasq.conf
 
 # Ensure WiFi radio isn't blocked.
 rfkill unblock wlan
 
 # Configure Wifi country
 raspi-config nonint do_wifi_country NL
-
-# Copy over hostapd.conf.
-cp hostapd.conf /etc/hostapd/hostapd.conf
-# hostapd.conf override to let it wait for the wifi adapter to be fully started
-mkdir -p /etc/systemd/system/hostapd.service.d
-cp hostapd.service.d.override /etc/systemd/system/hostapd.service.d/override.conf
 
 # Install iproute2 for traffic control.
 apt install -y iproute2
@@ -107,12 +99,6 @@ echo "Starting service.."
 systemctl start testdevice
 systemctl enable testdevice
 
-echo "Adding firewall rules.."
-# Add firewall rule.
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-# Save firewall rule.
-netfilter-persistent save
-
 echo "Reloading daemon.."
 systemctl daemon-reload
 
@@ -122,4 +108,4 @@ echo "If there are no errors, please reboot the system and all should be setup t
 echo " "
 echo "Default network name: Test-Device-01"
 echo "Default password: LiveryTest"
-echo "These can be changed in: '/etc/hostapd/hostapd.conf'"
+# echo "These can be changed in: '/etc/hostapd/hostapd.conf'"

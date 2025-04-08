@@ -1,7 +1,7 @@
 package wifi
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"strconv"
@@ -40,13 +40,13 @@ func checkDevicesConnectionStatus(devices *[]Device) {
 }
 
 func GetLeasedDevices() []Device {
-	file, err := os.Open("/var/lib/misc/dnsmasq.leases")
+	file, err := os.Open("/var/lib/NetworkManager/dnsmasq-wlan0.leases")
 
 	if err != nil {
 		log.Printf("Failed to open file: %s\n", err)
 	}
 
-	out, err := ioutil.ReadAll(file)
+	out, err := io.ReadAll(file)
 
 	if err != nil {
 		log.Printf("Failed to read file: %s\n", err)

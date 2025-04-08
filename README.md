@@ -48,7 +48,9 @@ Besides installing the necessary programs this script overwrites the following f
 `/etc/sysctl.d/routed-ap.conf`
 `/etc/hostapd/hostapd.conf`
 
-After the installation has completed, reboot the system and the network should show up with the default network name; unless changed it in `/etc/hostapd/hostapd.conf`.
+After the installation has completed, reboot the system and the network should show up with the default network name: `Test-Device-01`; unless changed it in `/etc/hostapd/hostapd.conf`.
+The password is shown in the logs.
+You can access the control panel by opening `http://<your_raspberry_pi_ip_address>`.
 
 ## Troubleshooting
 

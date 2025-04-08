@@ -1,7 +1,7 @@
 package wifi
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -46,13 +46,18 @@ func printOutput(output []byte, err error) {
 	}
 }
 
-func FetchLogs(start int, end int) Logs {
+func FetchLogs(start int, end int) (Logs, error) {
 	logFile, err := os.Open("out.log")
-
-	data, err := ioutil.ReadAll(logFile)
-
 	if err != nil {
 		log.Println("Could not open log file:", err)
+		return Logs{}, err
+	}
+
+	data, err := io.ReadAll(logFile)
+
+	if err != nil {
+		log.Println("Could read log file:", err)
+		return Logs{}, err
 	}
 
 	raw := string(data)
@@ -114,5 +119,5 @@ func FetchLogs(start int, end int) Logs {
 		Logs:      logs,
 	}
 
-	return logsContainer
+	return logsContainer, nil
 }
