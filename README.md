@@ -35,7 +35,7 @@ We will overwrite files and install new packages so please don't run this on a d
 - Run `sudo apt install git`
 - Run `git clone https://github.com/liveryvideo/wifi-test-device.git`
 - Run `cd wifi-test-device/setup`
-- Run `sudo ./setup.sh internal` as root
+- Run `sudo ./setup.sh embedded` as root
 - Check the logs for any errors.
 - Reboot
 
